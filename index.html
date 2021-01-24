@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>餐厅拥挤指数</title>
+  <!-- 引入样式文件 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.4/lib/index.css" rel="external nofollow" target="_blank" >
+ <!-- Bootstrap CSS -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js" rel="external nofollow" ></script>
+<script src="https://cdn.jsdelivr.net/npm/vant@2.4/lib/vant.min.js" rel="external nofollow" ></script>
+<script>
+// 在 #app 标签下渲染一个按钮组件
+new Vue({
+  el: '#app',
+  template: `<van-button>按钮</van-button>`
+});
+
+// 调用函数组件，弹出一个 Toast
+vant.Toast('提示');
+// 通过 CDN 引入时不会自动注册 Lazyload 组件
+// 可以通过下面的方式手动注册
+Vue.use(vant.Lazyload);
+</script>
+</head>
+<body>
+	<div id="title">
+		
+	
+  <div><header><h1 style="text-align: center;">餐厅拥挤指数</h1></header></div>
+  <div id="app">
+    <div class="container" style="margin-left: 50px; margin-right: 50px;">
+      <van-button plain type="info" v-on:click="change();loadXMLDoc();">切换校区</van-button>
+      <p style="display: inline-block;">当前显示为：<span id="campus"></span></p>
+    </div>
+    <div class="container" style="margin-left: 50px; margin-right: 50px;">
+      <van-button plain type="info" v-on:click="loadXMLDoc">点击刷新</van-button>
+      <p style="display:inline-block;">距离下一次更新还有：<span id="time">20</span>秒</p>
+    </div>
+    <br/>
+    <div style="margin-left: 50px; margin-right: 50px;">
+      <span id="p1" style="float: left;"></span>
+      <div class="progress" style="width: 70%; float: right;"><div id="jd1" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div><span id="per1" style="padding-top: 8px;"></span></div>
+    </div>
+    <br/>
+    <br/>
+    <div style="margin-left: 50px; margin-right: 50px;">
+      <span id="p2" style="float: left;"></span>
+      <div class="progress" style="width: 70%; float: right;"><div id="jd2" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div><span id="per2" style="padding-top: 8px;"></span></div>
+    </div>
+    <br/>
+    <br/>
+    <div style="margin-left: 50px; margin-right: 50px;">
+      <span id="p3" style="float: left;"></span>
+      <div class="progress" style="width: 70%; float: right;"><div id="jd3" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div><span id="per3" style="padding-top: 8px;"></span></div>
+    </div>
+    <br/>
+    <br/>
+    <div style="margin-left: 50px; margin-right: 50px;">
+      <span id="p4" style="float: left;"></span>
+      <div class="progress" style="width: 70%; float: right;"><div id="jd4" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div><span id="per4" style="padding-top: 8px;"></span></div>
+    </div>
+    <br/>
+    <br/>
+    <div style="margin-left: 50px; margin-right: 50px;">
+      <span id="p5" style="float: left;"></span>
+      <div class="progress" style="width: 70%; float: right;"><div id="jd5" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div><span id="per5" style="padding-top: 8px;"></span></div>
+    </div>
+    <br/>
+    <br/>
+    <div style="margin-left: 50px; margin-right: 50px;">
+      <span id="p6" style="float: left;"></span>
+      <div class="progress" style="width: 70%; float: right;"><div id="jd6" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div><span id="per6" style="padding-top: 8px;"></span></div>
+    </div>
+    <br/>
+    <br/>
+    <div style="margin-left: 50px; margin-right: 50px;">
+      <span id="p7" style="float: left;"></span>
+      <div class="progress" style="width: 70%; float: right;"><div id="jd7" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div><span id="per7" style="padding-top: 8px;"></span></div>
+    </div>
+    <br/>
+    <br/>
+    <div style="margin-left: 50px; margin-right: 50px;">
+      <span id="p8" style="float: left;"></span>
+      <div class="progress" style="width: 70%; float: right;"><div id="jd8" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div><span id="per8" style="padding-top: 8px;"></span></div>
+    </div>
+    <br/>
+    <br/>
+    <div style="margin-left: 50px; margin-right: 50px;">
+      <span id="p9" style="float: left;"></span>
+      <div class="progress" style="width: 70%; float: right;"><div id="jd9" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div><span id="per9" style="padding-top: 8px;"></span></div>
+    </div>
+    <br/>
+    <br/>
+    <div style="margin-left: 50px; margin-right: 50px;">
+      <span id="p10" style="float: left;"></span>
+      <div class="progress" style="width: 70%; float: right;"><div id="jd10" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div><span id="per10" style="padding-top: 8px;"></span></div>
+    </div>
+  </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<script>
+  var xq=1;
+  var txt;
+  var obj;
+  var int=setInterval("app.clock()",1000);
+	var num=20
+  var app = new Vue({
+    el: '#app',
+    data: {
+      title:'餐厅拥挤指数'
+    },
+    mounted:function()
+    {
+      this.loadXMLDoc();
+    },
+    methods: {
+      clock: function clock(){
+		          if(num>0) num-- 
+			        else{
+				      num=20;
+				      this.loadXMLDoc();
+			 }
+		    document.getElementById("time").innerHTML=num;
+       },
+      change: function change()
+      {
+      xq=1-xq;
+      },
+      loadXMLDoc: function loadXMLDoc()
+  {
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+    {
+      //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+      xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {
+      // IE6, IE5 浏览器执行代码
+      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+      if (xmlhttp.readyState==4 && xmlhttp.status==200)
+      {
+        txt=xmlhttp.responseText;
+        obj = eval ("(" + txt + ")");
+        if(xq==1)
+    {
+      document.getElementById("campus").innerHTML='北校区';
+      document.getElementById("p1").innerHTML=obj.data[0].CTMC+obj.data[0].LCMC;
+      document.getElementById("per1").innerHTML=obj.data[0].ZB;
+      document.getElementById("jd1").style.width=obj.data[0].ZB;
+      document.getElementById("p2").innerHTML=obj.data[1].CTMC+obj.data[1].LCMC;
+      document.getElementById("per2").innerHTML=obj.data[1].ZB;
+      document.getElementById("jd2").style.width=obj.data[1].ZB;
+      document.getElementById("p3").innerHTML=obj.data[2].CTMC+obj.data[2].LCMC;
+      document.getElementById("per3").innerHTML=obj.data[2].ZB;
+      document.getElementById("jd3").style.width=obj.data[2].ZB;
+      document.getElementById("p4").innerHTML=obj.data[3].CTMC+obj.data[3].LCMC;
+      document.getElementById("per4").innerHTML=obj.data[3].ZB;
+      document.getElementById("jd4").style.width=obj.data[3].ZB;
+      document.getElementById("p5").innerHTML=obj.data[4].CTMC+obj.data[4].LCMC;
+      document.getElementById("per5").innerHTML=obj.data[4].ZB;
+      document.getElementById("jd5").style.width=obj.data[4].ZB;
+      document.getElementById("p6").innerHTML=obj.data[5].CTMC+obj.data[5].LCMC;
+      document.getElementById("per6").innerHTML=obj.data[5].ZB;
+      document.getElementById("jd6").style.width=obj.data[5].ZB;
+      document.getElementById("p7").innerHTML=obj.data[6].CTMC+obj.data[6].LCMC;
+      document.getElementById("per7").innerHTML=obj.data[6].ZB;
+      document.getElementById("jd7").style.width=obj.data[6].ZB;
+      document.getElementById("p8").innerHTML=obj.data[7].CTMC+obj.data[7].LCMC;
+      document.getElementById("per8").innerHTML=obj.data[7].ZB;
+      document.getElementById("jd8").style.width=obj.data[7].ZB;
+      document.getElementById("p9").innerHTML=obj.data[8].CTMC+obj.data[8].LCMC;
+      document.getElementById("per9").innerHTML=obj.data[8].ZB;
+      document.getElementById("jd9").style.width=obj.data[8].ZB;
+      document.getElementById("p10").innerHTML=obj.data[9].CTMC+obj.data[9].LCMC;
+      document.getElementById("per10").innerHTML=obj.data[9].ZB;
+      document.getElementById("jd10").style.width=obj.data[9].ZB;
+    }
+    else
+    {
+      document.getElementById("campus").innerHTML='南校区';
+      document.getElementById("p1").innerHTML=obj.data[10].CTMC+obj.data[0].LCMC;
+      document.getElementById("jd1").style.width=obj.data[10].ZB;
+      document.getElementById("per1").innerHTML=obj.data[10].ZB;
+      document.getElementById("p2").innerHTML=obj.data[11].CTMC+obj.data[11].LCMC;
+      document.getElementById("jd2").style.width=obj.data[11].ZB;
+      document.getElementById("per2").innerHTML=obj.data[11].ZB;
+      document.getElementById("p3").innerHTML=obj.data[12].CTMC+obj.data[12].LCMC;
+      document.getElementById("jd3").style.width=obj.data[12].ZB;
+      document.getElementById("per3").innerHTML=obj.data[12].ZB;
+      document.getElementById("p4").innerHTML=obj.data[13].CTMC+obj.data[13].LCMC;
+      document.getElementById("jd4").style.width=obj.data[13].ZB;
+      document.getElementById("per4").innerHTML=obj.data[13].ZB;
+      document.getElementById("p5").innerHTML=obj.data[14].CTMC+obj.data[14].LCMC;
+      document.getElementById("jd5").style.width=obj.data[14].ZB;
+      document.getElementById("per5").innerHTML=obj.data[14].ZB;
+      document.getElementById("p6").innerHTML=obj.data[15].CTMC+obj.data[15].LCMC;
+      document.getElementById("jd6").style.width=obj.data[15].ZB;
+      document.getElementById("per6").innerHTML=obj.data[15].ZB;
+      document.getElementById("p7").innerHTML=obj.data[16].CTMC+obj.data[16].LCMC;
+      document.getElementById("jd7").style.width=obj.data[16].ZB;
+      document.getElementById("per7").innerHTML=obj.data[16].ZB;
+      document.getElementById("p8").innerHTML=obj.data[17].CTMC+obj.data[17].LCMC;
+      document.getElementById("jd8").style.width=obj.data[17].ZB;
+      document.getElementById("per8").innerHTML=obj.data[17].ZB;
+      document.getElementById("p9").innerHTML=obj.data[18].CTMC+obj.data[18].LCMC;
+      document.getElementById("jd9").style.width=obj.data[18].ZB;
+      document.getElementById("per9").innerHTML=obj.data[18].ZB;
+      document.getElementById("p10").innerHTML=obj.data[19].CTMC+obj.data[19].LCMC;
+      document.getElementById("jd10").style.width=obj.data[19].ZB;
+      document.getElementById("per10").innerHTML=obj.data[19].ZB;
+    }
+      }
+    }
+    xmlhttp.open("GET","http://canteen.chd.edu.cn/restaurantbackstage/restaurant/visitorsFloweate/selectRestaurantIndex",true);
+    xmlhttp.send(); 
+  }
+    },
+    created() {
+    },
+  })
+</script>
+</body>
+</html>
